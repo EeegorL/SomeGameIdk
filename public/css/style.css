@@ -3,7 +3,11 @@
 }
 
 .canvasClass {
-    width: 1680px;
-    height: 1050px;
+    width: 1024px;
+    height: 720px;
     border: 5px solid black;
+}
+
+.title {
+    color: red;
 }

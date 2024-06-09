@@ -22,7 +22,7 @@ class Player {
 
     #draw() {
         ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, spriteDefaultSize, -spriteDefaultSize);
+        ctx.fillRect(this.x, this.y, 10, -10);
    
     }
 
