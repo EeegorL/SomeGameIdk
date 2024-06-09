@@ -11,42 +11,64 @@ class Player {
             UP: false,
             DOWN: false,
             LEFT: false,
-            RIGHT: false
+            RIGHT: false,
+            JUMPED: false
         };
     };
+
 
     act() {
         this.#draw();
         this.#move();
-    }
+        this.#checkCollision(blocks);
+    };
 
     #draw() {
         ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, 10, -10);
-   
-    }
+        ctx.fillRect(this.x, this.y, this.width, -this.height);
+    };
 
     #move() {
         if(this.moving.UP) {
-            if(this.y - this.height > 0) {
                 this.y -= this.movementSpeed;
-            }
         } 
         if(this.moving.DOWN) {
-            if(this.y < canvas.height) {
                 this.y += this.movementSpeed;
-            }
         } 
         if(this.moving.LEFT) {
-            if(this.x > 0) {
                 this.x -= this.movementSpeed;
-            }
         }
         if(this.moving.RIGHT) {
-            if(this.x + this.width < canvas.width) {
                 this.x += this.movementSpeed;
+        }
+    };
+
+    #checkCollision(blocks) {
+        for(let block of blocks) {
+            if(this.moving.UP) {
+                if(this.y - this.height == block.y &&
+                    this.x + this.width >= block.x &&
+                    this.x <= block.x + block.width
+                ) this.y += this.movementSpeed;
+            } 
+            if(this.moving.DOWN) {
+                if(this.y == block.y - block.height &&
+                    this.x + this.width >= block.x &&
+                    this.x <= block.x + block.width
+                ) this.y -= this.movementSpeed;
+            } 
+            if(this.moving.LEFT) {
+                if(this.x == block.x + block.width &&
+                    this.y - this.height <= block.y &&
+                    this.y  >= block.y - block.height
+                ) this.x += this.movementSpeed;
+            }
+            if(this.moving.RIGHT) {
+                if(this.x + this.width ==  block.x &&
+                    this.y - this.height <= block.y &&
+                    this.y  >= block.y - block.height
+                ) this.x -= this.movementSpeed;
             }
         }
     }
-
-}
+};

@@ -7,12 +7,21 @@ const fps = 1000/120;
 let spriteDefaultSize = 10;
 const player = new Player(20, 20, spriteDefaultSize, spriteDefaultSize);
 
-const blocks = [];
+const blocks = [
+    //test wall
+    leftWall = new Block(100, 100, 100, 10)
+
+    //base walls (here pls)
+];
+
 
     const run = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     player.act();
+    baseWalls.forEach(wall => {
+        wall.draw();
+    })
 };
 
 const engine = () => {

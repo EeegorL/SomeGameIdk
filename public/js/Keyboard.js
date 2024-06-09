@@ -12,6 +12,9 @@ document.addEventListener("keydown", (e) => {
         case "d":
             player.moving.RIGHT = true;
             break;
+        case " ": //space
+            player.moving.JUMPED = true;
+            break;
     }
 });
 
@@ -28,6 +31,9 @@ document.addEventListener("keyup", (e) => {
             break;
         case "d":
             player.moving.RIGHT = false;
+            break;
+        case " ": //space
+            player.moving.JUMPED = false;
             break;
     }
 });
