@@ -6,7 +6,6 @@ class Player {
         this.height = height;
         this.directionLeft = false;
         this.directionUp = false;
-        this.movementSpeed = 1;
         this.moving = {
             UP: false,
             DOWN: false,
@@ -14,6 +13,19 @@ class Player {
             RIGHT: false,
             JUMPED: false
         };
+        this.buttonsPressed = {
+            W: false,
+            A: false,
+            S: false,
+            D: false,
+            SPACE: false
+        }
+        this.movementSpeed = 1;
+        this.velocity = {
+            x: 0,
+            y: 0
+        }
+        this.gravity = 0.5;
     };
 
 
@@ -29,19 +41,18 @@ class Player {
     };
 
     #move() {
-        if(this.moving.UP) {
-                this.y -= this.movementSpeed;
-        } 
-        if(this.moving.DOWN) {
-                this.y += this.movementSpeed;
-        } 
-        if(this.moving.LEFT) {
-                this.x -= this.movementSpeed;
-        }
-        if(this.moving.RIGHT) {
-                this.x += this.movementSpeed;
-        }
+        if(this.moving.UP && !this.buttonsPressed.S) this.velocity.y = -1;
+        else if(this.moving.DOWN && !this.buttonsPressed.W) this.velocity.y = 1;
+        else this.velocity.y = 0;
+
+        if(this.moving.LEFT && !this.buttonsPressed.D) this.velocity.x = -1;
+        else if(this.moving.RIGHT && !this.buttonsPressed.A) this.velocity.x = 1;
+        else this.velocity.x = 0;
+
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
     };
+
 
     #checkCollision(blocks) {
         for(let block of blocks) {
