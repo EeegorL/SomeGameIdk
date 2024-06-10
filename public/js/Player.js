@@ -13,13 +13,6 @@ class Player {
             RIGHT: false,
             JUMPED: false
         };
-        this.buttonsPressed = {
-            W: false,
-            A: false,
-            S: false,
-            D: false,
-            SPACE: false
-        }
         this.movementSpeed = 1;
         this.velocity = {
             x: 0,
@@ -41,12 +34,12 @@ class Player {
     };
 
     #move() {
-        if(this.moving.UP && !this.buttonsPressed.S) this.velocity.y = -1;
-        else if(this.moving.DOWN && !this.buttonsPressed.W) this.velocity.y = 1;
+        if(this.moving.UP && !this.moving.DOWN) this.velocity.y = -1;
+        else if(this.moving.DOWN && !this.moving.UP) this.velocity.y = 1;
         else this.velocity.y = 0;
 
-        if(this.moving.LEFT && !this.buttonsPressed.D) this.velocity.x = -1;
-        else if(this.moving.RIGHT && !this.buttonsPressed.A) this.velocity.x = 1;
+        if(this.moving.LEFT && !this.moving.RIGHT) this.velocity.x = -1;
+        else if(this.moving.RIGHT && !this.moving.LEFT) this.velocity.x = 1;
         else this.velocity.x = 0;
 
         this.x += this.velocity.x;
