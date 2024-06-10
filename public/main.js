@@ -8,10 +8,11 @@ let spriteDefaultSize = 10;
 const player = new Player(20, 20, spriteDefaultSize, spriteDefaultSize);
 
 const blocks = [
-    //test wall
-    wall = new Block(100, 100, 100, 10),
-    //default walls
-    floor = new Block(0, canvas.height, canvas.width, 1)
+    new Block(0, 100, canvas.width, 1),
+    new Block(50, 100, 40, 40),
+    new Block(100, 100, 40, 40),
+        new Block(100, 100, 40, 40)
+
 ];
 
     const run = () => {

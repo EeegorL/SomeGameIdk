@@ -34,45 +34,59 @@ class Player {
     };
 
     #move() {
-        if(this.moving.UP && !this.moving.DOWN) this.velocity.y = -1;
-        else if(this.moving.DOWN && !this.moving.UP) this.velocity.y = 1;
+        this.y += this.gravity;
+
+        if(this.moving.UP && !this.moving.DOWN) this.velocity.y = -this.movementSpeed;
+        else if(this.moving.DOWN && !this.moving.UP) this.velocity.y = this.movementSpeed;
         else this.velocity.y = 0;
 
-        if(this.moving.LEFT && !this.moving.RIGHT) this.velocity.x = -1;
-        else if(this.moving.RIGHT && !this.moving.LEFT) this.velocity.x = 1;
+        if(this.moving.LEFT && !this.moving.RIGHT) this.velocity.x = -this.movementSpeed;
+        else if(this.moving.RIGHT && !this.moving.LEFT) this.velocity.x = this.movementSpeed;
         else this.velocity.x = 0;
 
         this.x += this.velocity.x;
         this.y += this.velocity.y;
     };
 
-
     #checkCollision(blocks) {
+        let doesCollide = false;
         for(let block of blocks) {
-            if(this.moving.UP) {
-                if(this.y - this.height == block.y &&
+                if(this.y - this.height == block.y && // up collision 
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
-                ) this.y += this.movementSpeed;
-            } 
-            if(this.moving.DOWN) {
-                if(this.y == block.y - block.height &&
+                ) {this.y += this.movementSpeed; doesCollide = true}
+
+                if(this.y != block.y - block.height && // down collision
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
-                ) this.y -= this.movementSpeed;
-            } 
-            if(this.moving.LEFT) {
-                if(this.x == block.x + block.width &&
+                ) {this.gravity = 0.5; doesCollide = false}
+
+                if(this.y == block.y - block.height && // down collision part 2 (for resetting gravity to 0.5 after no more colliding)
+                    this.x + this.width >= block.x &&
+                    this.x <= block.x + block.width
+                ) {this.gravity = 0; doesCollide = true}
+
+
+
+
+
+                if(this.x == block.x + block.width && // left collision (NOT PERFECT, REMEMBER TO CHECK)
                     this.y - this.height <= block.y &&
                     this.y  >= block.y - block.height
-                ) this.x += this.movementSpeed;
-            }
-            if(this.moving.RIGHT) {
-                if(this.x + this.width ==  block.x &&
+                ) {this.x += this.movementSpeed; doesCollide = true}
+
+
+
+
+                
+
+                if(this.x + this.width ==  block.x && // right collision
                     this.y - this.height <= block.y &&
                     this.y  >= block.y - block.height
-                ) this.x -= this.movementSpeed;
-            }
+                ) {this.x -= this.movementSpeed; doesCollide = true}
         }
+        return doesCollide;
     }
+
+
 };
