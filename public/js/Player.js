@@ -25,7 +25,8 @@ class Player {
     act() {
         this.#draw();
         this.#move();
-        this.#checkCollision(blocks);
+        if(this.#checkCollision(blocks)) this.gravity = 0;
+        else this.gravity = 0.5;
     };
 
     #draw() {
@@ -56,17 +57,28 @@ class Player {
                     this.x <= block.x + block.width
                 ) {this.y += this.movementSpeed; doesCollide = true}
 
-                if(this.y != block.y - block.height && // down collision
-                    this.x + this.width >= block.x &&
-                    this.x <= block.x + block.width
-                ) {this.gravity = 0.5; doesCollide = false}
+  
 
-                if(this.y == block.y - block.height && // down collision part 2 (for resetting gravity to 0.5 after no more colliding)
+                if(this.y == block.y - block.height && // down collision
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
                 ) {this.gravity = 0; doesCollide = true}
+                
+                // down collision part 2 (for resetting gravity to 0.5 after no more colliding)
 
+                // if(this.y != block.y - block.height 
 
+                //     && 
+                //     this.x + this.width <= block.x 
+                //     &&
+                //     this.x >= block.x + block.width
+                // ) {this.gravity = 0.5; doesCollide = false}
+                if(
+                    !this.y == block.y -block.height &&
+                    this
+                ) {
+                // this.gravity = 0.5; doesCollide = false
+                }
 
 
 
