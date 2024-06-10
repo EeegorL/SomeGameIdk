@@ -11,7 +11,7 @@ const blocks = [
     new Block(0, 100, canvas.width, 1),
     new Block(50, 100, 40, 40),
     new Block(100, 100, 40, 40),
-        new Block(100, 100, 40, 40)
+    new Block(200, 50, 40, 20)
 
 ];
 
