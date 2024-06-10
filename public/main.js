@@ -19,7 +19,7 @@ const blocks = [
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     player.act();
-    baseWalls.forEach(wall => {
+    blocks.forEach(wall => {
         wall.draw();
     })
 };
