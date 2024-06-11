@@ -25,7 +25,7 @@ class Player {
     act() {
         this.#draw();
         this.#move();
-        if(this.#checkCollision(blocks)) this.gravity = 0;
+        if(this.#checkCollision(blocks).collides == true && this.#checkCollision(blocks).at == "down") this.gravity = 0;
         else this.gravity = 0.5;
     };
 
@@ -50,55 +50,28 @@ class Player {
     };
 
     #checkCollision(blocks) {
-        let doesCollide = false;
+        let collideData = {collides: false, at: null};
         for(let block of blocks) {
                 if(this.y - this.height == block.y && // up collision 
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
-                ) {this.y += this.movementSpeed; doesCollide = true}
-
-  
+                ) {this.y += this.movementSpeed; collideData = {collides: true, at: UP}};
 
                 if(this.y == block.y - block.height && // down collision
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
-                ) {this.gravity = 0; doesCollide = true}
-                
-                // down collision part 2 (for resetting gravity to 0.5 after no more colliding)
-
-                // if(this.y != block.y - block.height 
-
-                //     && 
-                //     this.x + this.width <= block.x 
-                //     &&
-                //     this.x >= block.x + block.width
-                // ) {this.gravity = 0.5; doesCollide = false}
-                if(
-                    !this.y == block.y -block.height &&
-                    this
-                ) {
-                // this.gravity = 0.5; doesCollide = false
-                }
-
-
+                ) {this.gravity = 0; collideData = {collides: true, at: DOWN}};
 
                 if(this.x == block.x + block.width && // left collision (NOT PERFECT, REMEMBER TO CHECK)
                     this.y - this.height <= block.y &&
-                    this.y  >= block.y - block.height
-                ) {this.x += this.movementSpeed; doesCollide = true}
-
-
-
-
-                
+                    this.y >= block.y - block.height
+                ) {this.x += this.movementSpeed; collideData = {collides: true, at: LEFT}};
 
                 if(this.x + this.width ==  block.x && // right collision
                     this.y - this.height <= block.y &&
                     this.y  >= block.y - block.height
-                ) {this.x -= this.movementSpeed; doesCollide = true}
+                ) {this.x -= this.movementSpeed; collideData = {collides: true, at: RIGHT}};
         }
-        return doesCollide;
+        return collideData;
     }
-
-
 };
