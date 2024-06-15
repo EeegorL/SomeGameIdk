@@ -19,6 +19,11 @@ class Player {
             y: 0
         }
         this.gravity = 0.5;
+
+        this.jumpHeight = 3;
+
+        this.isJumping = false;
+        this.jumpProgress = 0;
     };
 
 
@@ -31,7 +36,7 @@ class Player {
 
     #draw() {
         ctx.fillStyle = "red";
-        ctx.fillRect(this.x, this.y, this.width, -this.height);
+        ctx.fillRect(this.x, this.y, this.width, -this.height); // draw upwards from y
     };
 
     #move() {
@@ -44,6 +49,26 @@ class Player {
         if(this.moving.LEFT && !this.moving.RIGHT) this.velocity.x = -this.movementSpeed;
         else if(this.moving.RIGHT && !this.moving.LEFT) this.velocity.x = this.movementSpeed;
         else this.velocity.x = 0;
+
+        if(this.moving.JUMPED) {
+            if(this.#checkCollision(blocks).at == "down") {
+                this.isJumping = true;
+            } 
+        }
+
+        if(this.isJumping) {
+            this.jumpProgress++;
+            // console.log(this.#checkCollision(blocks))
+
+            if(this.jumpProgress < 10 && !this.#collidesAt("up")) this.y -= this.jumpHeight;
+            else if(this.jumpProgress > 10 && this.jumpProgress < 15) this.y -= 0;
+            else if(this.jumpProgress > 15 && this.jumpProgress < 25 && !this.#collidesAt("down")) this.y += this.jumpHeight;
+
+            if(this.jumpProgress >= 26) {
+                this.isJumping = false;
+                this.jumpProgress = 0;
+            }
+        }
 
         this.x += this.velocity.x;
         this.y += this.velocity.y;
@@ -73,5 +98,11 @@ class Player {
                 ) {this.x -= this.movementSpeed; collideData = {collides: true, at: RIGHT}};
         }
         return collideData;
+    }
+    #collidesAt(direction) {
+        const collides = this.#checkCollision(blocks);
+
+        if(collides.collides && collides.at == direction) return true;
+        else return false;
     }
 };
