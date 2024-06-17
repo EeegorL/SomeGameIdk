@@ -18,9 +18,10 @@ class Player {
             x: 0,
             y: 0
         }
-        this.gravity = 0.5;
+        this.initialGravity = 1;
+        this.gravity = this.initialGravity;
 
-        this.jumpHeight = 3;
+        this.jumpSpeed = 3;
 
         this.isJumping = false;
         this.jumpProgress = 0;
@@ -31,7 +32,7 @@ class Player {
         this.#draw();
         this.#move();
         if(this.#checkCollision(blocks).collides == true && this.#checkCollision(blocks).at == "down") this.gravity = 0;
-        else this.gravity = 0.5;
+        else this.gravity = this.initialGravity;
     };
 
     #draw() {
@@ -58,15 +59,19 @@ class Player {
 
         if(this.isJumping) {
             this.jumpProgress++;
-            // console.log(this.#checkCollision(blocks))
 
-            if(this.jumpProgress < 10 && !this.#collidesAt("up")) this.y -= this.jumpHeight;
-            else if(this.jumpProgress > 10 && this.jumpProgress < 15) this.y -= 0;
-            else if(this.jumpProgress > 15 && this.jumpProgress < 25 && !this.#collidesAt("down")) this.y += this.jumpHeight;
+            if(this.jumpProgress < 10 && !this.#collidesAt("up")) {
+                this.y -= this.jumpSpeed;
+                this.gravity = 0;
+            }
+            else if(this.jumpProgress > 10 && this.jumpProgress < 12) {
+                this.y -= this.gravity;
+            }
 
-            if(this.jumpProgress >= 26) {
+            if(this.jumpProgress > 12) {
                 this.isJumping = false;
                 this.jumpProgress = 0;
+                this.gravity = 0.5;
             }
         }
 

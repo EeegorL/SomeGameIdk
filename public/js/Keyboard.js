@@ -1,8 +1,8 @@
 document.addEventListener("keydown", (e) => {
     switch(e.key.toLowerCase()) {
-        case "w":
-           player.moving.UP = true;
-            break;
+        // case "w":
+        //    player.moving.UP = true;
+        //     break;
         // case "s":
         //     player.moving.DOWN = true
         //     break;
