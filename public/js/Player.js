@@ -21,7 +21,7 @@ class Player {
         this.initialGravity = 1;
         this.gravity = this.initialGravity;
 
-        this.jumpSpeed = 3;
+        this.jumpSpeed = 4;
 
         this.isJumping = false;
         this.jumpProgress = 0;
@@ -32,6 +32,7 @@ class Player {
         this.#draw();
         this.#move();
         if(this.#checkCollision(blocks).collides == true && this.#checkCollision(blocks).at == "down") this.gravity = 0;
+        // if(this.#collidesAt("down")) this.gravity = 0;
         else this.gravity = this.initialGravity;
     };
 
@@ -52,15 +53,20 @@ class Player {
         else this.velocity.x = 0;
 
         if(this.moving.JUMPED) {
-            if(this.#checkCollision(blocks).at == "down") {
+            if(this.#collidesAt("down")) {
                 this.isJumping = true;
             } 
         }
 
         if(this.isJumping) {
             this.jumpProgress++;
+            let hasCollidedMidJump = false;
+            // console.log(this.#checkCollision(blocks).at == UP)
+            if(this.#checkCollision(blocks).at == UP) {
+                hasCollidedMidJump = true;
+            }
 
-            if(this.jumpProgress < 10 && !this.#collidesAt("up")) {
+            if(this.jumpProgress < 10 && !hasCollidedMidJump) {
                 this.y -= this.jumpSpeed;
                 this.gravity = 0;
             }
@@ -72,6 +78,7 @@ class Player {
                 this.isJumping = false;
                 this.jumpProgress = 0;
                 this.gravity = 0.5;
+                hasCollidedMidJump = false;
             }
         }
 
@@ -82,22 +89,23 @@ class Player {
     #checkCollision(blocks) {
         let collideData = {collides: false, at: null};
         for(let block of blocks) {
-                if(this.y - this.height == block.y && // up collision 
-                    this.x + this.width >= block.x &&
+                if(this.y - this.height <= block.y && // up collision 
+                    this.y >= block.y + block.height &&
+                    this.x + this.width - 1 >= block.x && // some minor collision issue, thus "- 1"
                     this.x <= block.x + block.width
-                ) {this.y += this.movementSpeed; collideData = {collides: true, at: UP}};
+                ) {this.y = block.y + this.height; collideData = {collides: true, at: UP}; console.log(collideData); this.y = block.y + this.height};
 
                 if(this.y == block.y - block.height && // down collision
                     this.x + this.width >= block.x &&
                     this.x <= block.x + block.width
                 ) {this.gravity = 0; collideData = {collides: true, at: DOWN}};
 
-                if(this.x == block.x + block.width && // left collision (NOT PERFECT, REMEMBER TO CHECK)
+                if(this.x == block.x + block.width && // left collision
                     this.y - this.height <= block.y &&
                     this.y >= block.y - block.height
                 ) {this.x += this.movementSpeed; collideData = {collides: true, at: LEFT}};
 
-                if(this.x + this.width ==  block.x && // right collision
+                if(this.x + this.width == block.x && // right collision
                     this.y - this.height <= block.y &&
                     this.y  >= block.y - block.height
                 ) {this.x -= this.movementSpeed; collideData = {collides: true, at: RIGHT}};

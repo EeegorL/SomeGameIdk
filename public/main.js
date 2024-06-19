@@ -11,7 +11,7 @@ const player = new Player(20, 20, spriteDefaultSize, spriteDefaultSize);
 const blocks = [
     //test blocks
     new Block(0, 100, canvas.width, 1),
-    new Block(30, 60, 80, 2),
+    new Block(30, 75, 80, 2),
     new Block(50, 100, 40, 40),
     new Block(100, 100, 40, 40),
     new Block(200, 50, 40, 20),
